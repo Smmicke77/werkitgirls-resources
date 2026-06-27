@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Jargon Decoder — Werk It Girls</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0f1a2e;
+  --orange:#e8621a;
+  --orange-lt:#fdf0e8;
+  --orange-dk:#b84d10;
+  --taupe:#7a6a58;
+  --taupe-lt:#f5f2ee;
+  --mid:#e8e2db;
+  --bg:#f7f5f2;
+  --white:#ffffff;
+  --text:#0f1a2e;
+  --muted:#7a6a58;
+  --red:#a32d2d;
+  --red-lt:#fdecea;
+  --green:#16a34a;
+  --blue:#185fa5;
+  --blue-lt:#e6f1fb;
+  --amber:#854f0b;
+  --amber-lt:#faeeda;
+}
+body{background:var(--bg);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--text);padding-bottom:3rem}
+
+.header{background:var(--navy);padding:2.5rem 1.5rem 2rem;text-align:center}
+.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:.5rem}
+.header h1{font-size:26px;font-weight:700;color:var(--white);margin-bottom:.75rem;line-height:1.2}
+.header-hook{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:.875rem 1.125rem;max-width:480px;margin:0 auto;font-size:14px;color:rgba(255,255,255,.85);line-height:1.65;font-style:italic}
+
+.filter-bar{background:var(--white);border-bottom:0.5px solid var(--mid);padding:.75rem 1.25rem;display:flex;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.f-btn{background:var(--taupe-lt);border:1px solid var(--mid);border-radius:50px;padding:6px 14px;font-size:12px;font-weight:500;color:var(--taupe);cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap}
+.f-btn:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-lt)}
+.f-btn.on{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.f-btn.gate-on{background:var(--red);border-color:var(--red);color:var(--white)}
+
+.main{max-width:680px;margin:0 auto;padding:1.5rem 1.25rem 2rem}
+.count-note{font-size:12px;color:var(--muted);margin-bottom:.875rem;text-align:right}
+
+.cat-intro{background:var(--white);border:0.5px solid var(--mid);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;font-size:13px;color:var(--muted);line-height:1.6}
+.cat-intro strong{color:var(--text);font-weight:600}
+
+.acc-list{display:flex;flex-direction:column;gap:8px}
+
+.acc-item{background:var(--white);border:0.5px solid var(--mid);border-radius:12px;overflow:hidden}
+.acc-item.gate{border-left:3px solid var(--red)}
+.acc-item.use{border-left:3px solid var(--orange)}
+.acc-item.know{border-left:3px solid var(--blue)}
+.acc-item.skip{border-left:3px solid var(--mid)}
+
+.acc-head{display:flex;align-items:center;gap:10px;padding:.875rem 1.125rem;cursor:pointer;user-select:none}
+.acc-head:hover{background:var(--taupe-lt)}
+.acc-name{font-size:15px;font-weight:600;color:var(--text);flex:1}
+.acc-badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.b-gate{background:var(--red-lt);color:var(--red)}
+.b-use{background:var(--orange-lt);color:var(--orange-dk)}
+.b-know{background:var(--blue-lt);color:var(--blue)}
+.b-skip{background:var(--taupe-lt);color:var(--taupe)}
+.acc-chev{font-size:16px;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.acc-item.open .acc-chev{transform:rotate(180deg)}
+
+.acc-body{display:none;border-top:0.5px solid var(--mid);padding:1.125rem}
+.acc-item.open .acc-body{display:block}
+
+.weapon-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-lt);border:0.5px solid #f5c6c2;border-radius:6px;padding:5px 10px;font-size:11px;color:var(--red);font-weight:600;margin-bottom:.875rem}
+
+.acc-def{font-size:13.5px;color:var(--text);line-height:1.72;margin-bottom:.875rem}
+.acc-analogy{border-left:2px solid var(--mid);padding-left:.875rem;font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;margin-bottom:.875rem}
+
+.tech-row{display:flex;align-items:center;gap:8px;margin-bottom:.875rem}
+.tech-lbl{font-size:11px;color:var(--muted);white-space:nowrap}
+.tech-track{flex:1;height:5px;background:var(--mid);border-radius:3px}
+.tech-fill{height:5px;border-radius:3px}
+.t-none{background:#22c55e;width:8%}
+.t-little{background:var(--orange);width:35%}
+.t-scary{background:var(--red);width:72%}
+.tech-val{font-size:11px;font-weight:600;white-space:nowrap}
+.v-none{color:#16a34a}.v-little{color:var(--orange)}.v-scary{color:var(--red)}
+
+.need-lbl{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--taupe);margin-bottom:.3rem}
+.need-txt{font-size:13px;color:var(--text);line-height:1.6}
+
+@media(max-width:480px){
+  .header{padding:2rem 1.25rem 1.75rem}
+  .header h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Werk It Girls</div>
+  <h1>AI Jargon Decoder</h1>
+  <div class="header-hook">Heard a word in a meeting and felt like you weren't supposed to be in the room? You were supposed to be in the room. Here's what it actually means — and whether it matters for you.</div>
+</div>
+
+<div class="filter-bar">
+  <button class="f-btn on" onclick="filter('all',this)">All terms</button>
+  <button class="f-btn" onclick="filter('gatekeeper',this)">🚪 Room gatekeepers</button>
+  <button class="f-btn" onclick="filter('use',this)">Things you'll actually use</button>
+  <button class="f-btn" onclick="filter('know',this)">Good to know</button>
+  <button class="f-btn" onclick="filter('skip',this)">Skip unless asked</button>
+</div>
+
+<div class="main">
+  <div class="count-note" id="countNote">17 terms</div>
+  <div class="cat-intro" id="catIntro">Tap any term to expand it. Start with <strong>Room gatekeepers</strong> if you've ever felt out of place in an AI conversation.</div>
+  <div class="acc-list" id="accList"></div>
+</div>
+
+<script>
+const CAT_INTROS = {
+  all: 'Tap any term to expand it. Start with <strong>Room gatekeepers</strong> if you\'ve ever felt out of place in an AI conversation.',
+  gatekeeper: 'These are the terms most commonly used — consciously or not — to signal who belongs in technical conversations. Knowing what they actually mean is the antidote.',
+  use: 'These are terms with immediate, practical value. You will use these — or already do — whether you think of yourself as technical or not.',
+  know: 'These terms come up in conversation. You don\'t need to act on them, but knowing what they mean gives you context and confidence.',
+  skip: 'These are developer-facing terms. You\'re unlikely to encounter them directly. If someone uses them with you, it\'s probably not relevant to what you\'re working on.'
+};
+
+const TERMS = [
+  {name:"Python",cat:"gatekeeper",badge:"Room gatekeeper",bc:"b-gate",weapon:true,
+   def:"A programming language that became the dominant tool for AI researchers and data scientists. It gets name-dropped constantly in AI rooms as a credibility signal — the equivalent of saying 'I am technical.' The irony: you don't need Python to use AI. The entire natural language revolution happened so you don't have to.",
+   analogy:"Like dropping the name of an obscure wine region to signal sophistication at a dinner party. Impressive to some. Irrelevant to whether the food is good.",
+   tech:"scary",techLbl:"Looks scary",
+   need:"No. Python is for building AI, not using it. Natural language is your interface now."},
+
+  {name:"GitHub",cat:"gatekeeper",badge:"Room gatekeeper",bc:"b-gate",weapon:true,
+   def:"A website where developers store and share code. Frequently cited in AI rooms as a badge of technical credibility. In reality, it's a filing system — for code files instead of documents. Having a GitHub account doesn't make someone's work better. It just means they stored it there.",
+   analogy:"Google Drive, but for code. A man storing scripts in GitHub is not more capable than a woman solving a 40-hour problem in plain English. The room just hasn't caught up yet.",
+   tech:"scary",techLbl:"Looks scary",
+   need:"Not unless you write code. Don't let someone's GitHub account signal more expertise than your results."},
+
+  {name:"Script",cat:"gatekeeper",badge:"Room gatekeeper",bc:"b-gate",weapon:true,
+   def:"A file containing a sequence of instructions for a computer to follow automatically. When someone says they're 'running a script,' they mean: I set up instructions and the computer is executing them. Often cited as technical work — but a script that takes 40 hours to write manually can be replaced by a well-worded AI prompt in minutes.",
+   analogy:"A very detailed to-do list written in a language the computer follows precisely. Valuable — but not more valuable than a result achieved faster another way.",
+   tech:"scary",techLbl:"Looks scary",
+   need:"You don't need to write scripts. But knowing what they are helps you recognize when technical complexity is being used as a status signal rather than a measure of results."},
+
+  {name:"Machine learning",cat:"gatekeeper",badge:"Room gatekeeper",bc:"b-gate",weapon:true,
+   def:"The process by which AI systems learn patterns from data rather than being explicitly programmed with rules. When someone says 'machine learning,' they usually mean: the AI figured this out on its own by studying examples. It's the engine under the hood of every AI tool you use.",
+   analogy:"You didn't learn to recognize a cat by memorizing a rulebook. You saw thousands of cats. Machine learning is the same process, at massive scale, for computers.",
+   tech:"scary",techLbl:"Looks scary",
+   need:"Just vocabulary. Knowing what it means lets you follow the conversation without being intimidated by it. You don't need to know how it works to benefit from it."},
+
+  {name:"JSON",cat:"gatekeeper",badge:"Room gatekeeper",bc:"b-gate",weapon:true,
+   def:"A structured way of writing information so computers can read it. It looks intimidating — lots of brackets and colons — but it's just organized data, like a very precise list. It shows up in tutorials and documentation in a way that implies 'if you don't know this, this isn't for you.' That's not true. Most users never write or see JSON directly. AI tools handle it behind the scenes.",
+   analogy:"Imagine writing a contact card in a format a filing system can sort automatically. The brackets are the filing system's grammar — not yours. You don't need to learn the grammar to use the filing system.",
+   tech:"scary",techLbl:"Looks scary",
+   need:"You almost never need to write it. But now when you see it, you'll know exactly what's happening — and that it has nothing to do with whether you belong in the conversation."},
+
+  {name:"Prompt",cat:"use",badge:"Things you'll actually use",bc:"b-use",weapon:false,
+   def:"What you type to an AI tool. Your question, instruction, or description. The better you describe what you want — with context, specificity, and clarity — the better the output. This is the primary skill of the AI era. It is a communication skill, not a technical one.",
+   analogy:"Like briefing a very capable assistant. The clearer your brief, the better their work.",
+   tech:"none",techLbl:"Not at all",
+   need:"Yes — this is your most important skill right now. And research shows women are naturally strong at it."},
+
+  {name:"HTML",cat:"use",badge:"Things you'll actually use",bc:"b-use",weapon:false,
+   def:"The language web pages are built in. When someone says 'paste this HTML,' they mean: paste this block of text into a website and it will display something — a button, a form, a layout. You don't write it from scratch. You paste what someone else (or AI) generates.",
+   analogy:"A recipe card. You don't invent the recipe — you follow it, or hand it to someone who can.",
+   tech:"little",techLbl:"A little",
+   need:"Only if you're building a web page. AI generates the HTML — you paste it. No writing required."},
+
+  {name:"URL",cat:"use",badge:"Things you'll actually use",bc:"b-use",weapon:false,
+   def:"The web address of a page. Starts with https://. That's all it is — a location, like a street address for a website. Everyone uses URLs every day without thinking of them as technical.",
+   analogy:"If the internet is a city, a URL is the street address of a specific building.",
+   tech:"none",techLbl:"Not at all",
+   need:"Yes — you use these every day. Nothing technical here."},
+
+  {name:"Plugin / skill",cat:"use",badge:"Things you'll actually use",bc:"b-use",weapon:false,
+   def:"A pre-built add-on that gives an AI tool a specific capability — generating images, searching the web, creating a specific document type. Someone else built it. You just activate and use it.",
+   analogy:"An app on your phone. You didn't build the camera app — you just press the button.",
+   tech:"none",techLbl:"Not at all",
+   need:"Yes — knowing what plugins exist for your AI tool can save you hours. No coding required to use them."},
+
+  {name:"Embed",cat:"use",badge:"Things you'll actually use",bc:"b-use",weapon:false,
+   def:"Placing content from one place inside another — like putting a YouTube video on your website, or adding an interactive tool to your podcast page. Usually involves pasting a short block of code someone else — or AI — already wrote.",
+   analogy:"Hanging a picture frame on a wall. You didn't build the frame — you just placed it.",
+   tech:"none",techLbl:"Not at all",
+   need:"Yes — relevant any time you're adding tools or videos to a website or podcast page. Simpler than it sounds. AI generates the code; you paste it."},
+
+  {name:"Model",cat:"know",badge:"Good to know",bc:"b-know",weapon:false,
+   def:"The AI brain behind the tool. When people say 'GPT-4,' 'Claude,' or 'Gemini,' they're referring to the model — the system trained to understand and generate language. Different models have different strengths. You choose one the way you choose a tool for a job.",
+   analogy:"The engine in a car. You don't need to understand how it works to drive well.",
+   tech:"none",techLbl:"Not at all",
+   need:"Helpful to know which model you're using and roughly what it's good at. No technical knowledge required."},
+
+  {name:"LLM",cat:"know",badge:"Good to know",bc:"b-know",weapon:false,
+   def:"Large Language Model. The technical name for AI systems like Claude, ChatGPT, and Gemini. 'Large' means trained on enormous amounts of text. 'Language Model' means it works by understanding and generating language. It's the long name for the thing everyone just calls AI.",
+   analogy:"Like calling a car an 'internal combustion personal transport vehicle.' Same thing. Longer name. Usually said by people who want you to know they know the longer name.",
+   tech:"little",techLbl:"A little",
+   need:"Just vocabulary. Useful for following conversations in rooms where people are showing off."},
+
+  {name:"Token",cat:"know",badge:"Good to know",bc:"b-know",weapon:false,
+   def:"The unit AI models use to measure text — roughly a word or part of a word. AI tools have a 'context window' measured in tokens, which is how much text they can hold in mind at once. When you hit the limit, the AI starts forgetting earlier parts of the conversation.",
+   analogy:"Like a whiteboard with limited space. As you write more, you eventually have to erase the oldest notes to make room.",
+   tech:"little",techLbl:"A little",
+   need:"Useful to know why very long conversations with AI can lose earlier context. Not something you actively manage."},
+
+  {name:"Training data",cat:"know",badge:"Good to know",bc:"b-know",weapon:false,
+   def:"The text, books, articles, and websites an AI read before you started using it. This shaped what it knows — and what it doesn't. Every AI has a knowledge cutoff date — a point after which it didn't read anything new. Ask it something recent and it genuinely won't know. This isn't a bug. It's how training works. The good news: most AI tools now have web search built in, which means the cutoff matters much less. When web search is on, the AI looks things up in real time rather than relying only on what it learned. To find out your tool's cutoff, just ask it: 'What is your knowledge cutoff date?' It will tell you honestly.",
+   analogy:"Like asking a very well-read colleague who took a sabbatical. Brilliant on everything up to when they left — but you'd want to double-check anything that might have changed while they were away.",
+   tech:"none",techLbl:"Not at all",
+   need:"Important context for two situations: when AI gives a confident wrong answer (it may have learned something inaccurate), and when it seems behind on recent events (it may not have read past its cutoff). Neither means the tool is broken — it means you know how to use it smarter."},
+
+  {name:"API",cat:"know",badge:"Good to know",bc:"b-know",weapon:false,
+   def:"A way for two software programs to talk to each other automatically. When a company says they have an API, they mean: other tools can plug into ours without human input. You don't configure it — developers do.",
+   analogy:"The electrical socket in the wall. You plug things in. You don't wire the building.",
+   tech:"little",techLbl:"A little",
+   need:"Only if you're managing a software integration. For everyday AI use, you won't touch this."}];
+
+const CAT_BORDER = {gatekeeper:'gate', use:'use', know:'know', skip:'skip'};
+
+function render(cat) {
+  const list = document.getElementById('accList');
+  const countEl = document.getElementById('countNote');
+  const introEl = document.getElementById('catIntro');
+  list.innerHTML = '';
+  introEl.innerHTML = CAT_INTROS[cat];
+  const items = cat === 'all' ? TERMS : TERMS.filter(t => t.cat === cat);
+  countEl.textContent = items.length + ' term' + (items.length === 1 ? '' : 's');
+  items.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'acc-item ' + (CAT_BORDER[t.cat] || '');
+    div.innerHTML = `
+      <div class="acc-head" onclick="this.closest('.acc-item').classList.toggle('open')">
+        <span class="acc-name">${t.name}</span>
+        <span class="acc-badge ${t.bc}">${t.badge}</span>
+        <i class="ti ti-chevron-down acc-chev" aria-hidden="true"></i>
+      </div>
+      <div class="acc-body">
+        ${t.weapon ? '<div class="weapon-tag"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:13px"></i> Often used to signal who belongs in the room</div>' : ''}
+        <div class="acc-def">${t.def}</div>
+        <div class="acc-analogy">${t.analogy}</div>
+        <div class="tech-row">
+          <span class="tech-lbl">How technical is it really?</span>
+          <div class="tech-track"><div class="tech-fill t-${t.tech}"></div></div>
+          <span class="tech-val v-${t.tech}">${t.techLbl}</span>
+        </div>
+        <div class="need-lbl">Do you need to know this?</div>
+        <div class="need-txt">${t.need}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function filter(cat, btn) {
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on','gate-on'));
+  btn.classList.add(cat === 'gatekeeper' ? 'gate-on' : 'on');
+  render(cat);
+}
+
+render('all');
+</script>
+</body>
+</html>
